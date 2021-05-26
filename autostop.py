@@ -139,7 +139,7 @@ resource, last_active_time = max(activities, key=lambda x: x[1])
 
 print(f"Last activity resource={resource} time={last_active_time}")
 
-print("Result from top: {}".format(top()))
+print(f"Result from top: {}".format(top()))
 if is_idle(last_active_time) and top() < 20:
     print("Shutting down the instance as instance is idle and top is {}".format(top()))
     client = boto3.client('sagemaker')
