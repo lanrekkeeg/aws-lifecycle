@@ -20,6 +20,8 @@ import json
 import subprocess, sys, re
 from io import StringIO
 import pandas as pd
+import psutil
+
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -97,29 +99,16 @@ def last_kernel_connection_activity(kernel):
 
 def top():
     #output = subprocess.check_output(['top',"-bn1","-o","%CPU"])
-    output = subprocess.check_output(['top',"-bn1"])
-
-    #output = subprocess.check_output(['top', "-bn1", "-o", "%MEM"])
-    match = re.match(r'^[\w\W]*?\n( +PID.*COMMAND)\n([\w\W]*)', output.decode())
-
-    header = match[1]
-    data = match[2]
-
-    df = pd.read_fwf( StringIO(data)
-        , colspecs = [(0,5), (6,16), (16,18), (19,22), (23,30), (31,37), (38,44), (45,46), (47,52), (53,57), (58,67), (68,999) ]
-        , names    = ['PID', 'USER',    'PR',    'NI',  'VIRT',   'RES',   'SHR',     'S',  '%CPU',  '%MEM', 'TIME+', 'COMMAND']
-    )
-    dat = df.to_dict(orient='index')
-    process_output = []
-    #print(type(dat))
-    #lst.sort(key=lambda tup: tup[1])
-    for key, val in dat.items():
-        print(val['COMMAND'],"=",val['%CPU'])
-        process_output.append((val['COMMAND'],val['%CPU']))
-
-    #print(df.to_dict(orient='index'))
-    process_output.sort(key=lambda tup: tup[1],reverse=True)
-    return process_output[1]
+    listOfProcessNames = list()
+# Iterate over all running processes
+    for proc in psutil.process_iter():
+        # Get process detail as dictionary
+        pInfoDict = proc.as_dict(attrs=['name', 'cpu_percent'])
+        # Append dict of process detail in list
+        if pInfoDict['cpu_percent'] != None:
+            listOfProcessNames.append((pInfoDict['name'],int(pInfoDict['cpu_percent'])))
+    listOfProcessNames.sort(key=lambda tup: tup[1],reverse=True)
+    return listOfProcessNames[1]
     #print(process_output[0])
 
 last_active_time = datetime.now() - timedelta(days=3*365)
