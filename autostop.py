@@ -108,7 +108,7 @@ def top():
         if pInfoDict['cpu_percent'] != None:
             listOfProcessNames.append((pInfoDict['name'],int(pInfoDict['cpu_percent'])))
     listOfProcessNames.sort(key=lambda tup: tup[1],reverse=True)
-    return listOfProcessNames[1]
+    return listOfProcessNames[0][1]
     #print(process_output[0])
 
 last_active_time = datetime.now() - timedelta(days=3*365)
