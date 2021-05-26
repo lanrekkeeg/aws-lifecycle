@@ -2,7 +2,7 @@
 set -e
 
 # PARAMETERS
-IDLE_TIME=3600
+IDLE_TIME=180
 
 echo "Fetching the autostop script"
 wget -O autostop.py https://raw.githubusercontent.com/lanrekkeeg/aws-lifecycle/main/autostop.py
