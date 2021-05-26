@@ -96,7 +96,9 @@ def last_kernel_connection_activity(kernel):
     return kernel['last_activity']
 
 def top():
-    output = subprocess.check_output(['top',"-bn1","-o","%CPU"])
+    #output = subprocess.check_output(['top',"-bn1","-o","%CPU"])
+    output = subprocess.check_output(['top',"-bn1"])
+
     #output = subprocess.check_output(['top', "-bn1", "-o", "%MEM"])
     match = re.match(r'^[\w\W]*?\n( +PID.*COMMAND)\n([\w\W]*)', output.decode())
 
