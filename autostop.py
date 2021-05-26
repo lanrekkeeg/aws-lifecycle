@@ -106,7 +106,7 @@ def top():
         pInfoDict = proc.as_dict(attrs=['name', 'cpu_percent'])
         # Append dict of process detail in list
         if pInfoDict['cpu_percent'] != None:
-            listOfProcessNames.append((pInfoDict['name'],int(pInfoDict['cpu_percent'])))
+            listOfProcessNames.append((pInfoDict['name'],pInfoDict['cpu_percent']))
     listOfProcessNames.sort(key=lambda tup: tup[1],reverse=True)
     return listOfProcessNames[0][1]
     #print(process_output[0])
